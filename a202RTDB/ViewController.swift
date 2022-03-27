@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Auth.auth().signInAnonymously(completion: nil)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
