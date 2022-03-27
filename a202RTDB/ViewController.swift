@@ -10,29 +10,31 @@ import Firebase
 
 class ViewController: UIViewController {
     
-    var ref:DatabaseReference!
-
+    @IBOutlet weak var nickNameTF: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Auth.auth().signInAnonymously(completion: nil)
-        ref = Database.database().reference()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-//        ref.child("test").child("string").setValue("這是一個測試")
-//
-//        var arr = [9999,333,444]
-//
-//        ref.child("test").child("array").setValue(arr)
         
-        
-        var dic = ["name":"Danny","age":25] as [String : Any]
-        
-        ref.child("test").child("dic").setValue(dic)
+
     }
 
-
+    @IBAction func goPage2(_ sender: Any) {
+        let nickName = nickNameTF.text ?? ""
+        if nickName.count < 1{
+            let alert = UIAlertController(title: "請輸入匿稱", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
+            return
+        }
+        //go Next page
+        
+    }
+    
 }
 
