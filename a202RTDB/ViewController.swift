@@ -23,6 +23,12 @@ class ViewController: UIViewController {
         
 
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nextVC = segue.destination as? Page2ViewController{
+            nextVC.nickname = nickNameTF.text ?? ""
+        }
+    }
 
     @IBAction func goPage2(_ sender: Any) {
         let nickName = nickNameTF.text ?? ""
@@ -33,6 +39,7 @@ class ViewController: UIViewController {
             return
         }
         //go Next page
+        self.performSegue(withIdentifier: "goPage2", sender: nil)
         
     }
     
