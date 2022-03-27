@@ -10,10 +10,11 @@ import Firebase
 
 class Page2ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
-    
+    var selectedID = 0
     var nickname = ""
     var ref:DatabaseReference!
     var subjects:[String] = []
+    var keys:[String] = []
     @IBOutlet weak var theTableView: UITableView!
     
     override func viewDidLoad() {
@@ -29,11 +30,14 @@ class Page2ViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         ref.observeSingleEvent(of: .value) { dataSnap in
 //            print(dataSnap)
             self.subjects.removeAll()
+            self.keys.removeAll()
             for item in dataSnap.children{
                 if let theSubject = item as? DataSnapshot{
                     let suject = theSubject.childSnapshot(forPath: "subject").value as? String ?? ""
 //                    print(suject)
                     self.subjects.append(suject)
+                    let key = theSubject.key
+                    self.keys.append(key)
                 }
             }
             
@@ -43,6 +47,14 @@ class Page2ViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nextVC = segue.destination as? Page3ViewController{
+            nextVC.key = keys[selectedID]
+            nextVC.suject = subjects[selectedID]
+        }
+    }
+    
     
     //MARK: TableView DataSource & Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,6 +68,13 @@ class Page2ViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         cell.textLabel?.text = subjects[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedID = indexPath.row
+        
+        
+        performSegue(withIdentifier: "goPage3", sender: nil)
     }
     
 
