@@ -12,6 +12,7 @@ class Page2ViewController: UIViewController {
     
     var nickname = ""
     var ref:DatabaseReference!
+    var subjects:[String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,10 +21,17 @@ class Page2ViewController: UIViewController {
         ref = Database.database().reference().child("for/subs")
         ref.observeSingleEvent(of: .value) { dataSnap in
             print(dataSnap)
+            self.subjects.removeAll()
             for item in dataSnap.children{
-                print("=======")
-                print(item)
+                if let theSubject = item as? DataSnapshot{
+                    let suject = theSubject.childSnapshot(forPath: "subject").value as? String ?? ""
+//                    print(suject)
+                    self.subjects.append(suject)
+                }
             }
+            
+            print(self.subjects)
+            
         }
         
     }
